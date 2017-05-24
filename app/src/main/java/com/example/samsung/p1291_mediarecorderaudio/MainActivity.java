@@ -2,9 +2,9 @@ package com.example.samsung.p1291_mediarecorderaudio;
 
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 
 import java.io.File;
@@ -33,12 +33,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickBtn(View view) {
 
-        try {
-            switch (view.getId()) {
+        switch (view.getId()) {
 
-                case R.id.btnRecStart:
-                    releaseRecorder();
+            case R.id.btnRecStart:
+                releaseRecorder();
 
+                try {
                     File outFile = new File(fileName);
                     if (outFile.exists()) {
                         outFile.delete();
@@ -50,27 +50,31 @@ public class MainActivity extends AppCompatActivity {
                     mediaRecorder.setOutputFile(fileName);
                     mediaRecorder.prepare();
                     mediaRecorder.start();
-                    break;
-                case R.id.btnRecStop:
-                    if (mediaRecorder != null) {
-                        mediaRecorder.stop();
-                    }
-                    break;
-                case R.id.btnPlayStart:
-                    releasePlayer();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case R.id.btnRecStop:
+                if (mediaRecorder != null) {
+                    mediaRecorder.stop();
+                }
+                break;
+            case R.id.btnPlayStart:
+                releasePlayer();
 
+                try {
                     mediaPlayer = new MediaPlayer();
                     mediaPlayer.setDataSource(fileName);
                     mediaPlayer.prepare();
                     mediaPlayer.start();
-                    break;
-                case R.id.btnPlayStop:
-                    if (mediaPlayer.isPlaying()) {
-                        mediaPlayer.stop();
-                    }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case R.id.btnPlayStop:
+                if (mediaPlayer.isPlaying()) {
+                    mediaPlayer.stop();
+                }
         }
     }
 
