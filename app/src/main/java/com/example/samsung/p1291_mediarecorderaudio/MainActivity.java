@@ -4,6 +4,7 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -14,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
     private MediaRecorder mediaRecorder;
     private MediaPlayer mediaPlayer;
-    private String fileName;
+    private String fileName, msg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         fileName = Environment.getExternalStorageDirectory() + "/record.3gpp";
+        msg = "onCreate(), fileName = " + fileName;
+        Messager.sendToAllRecipients(getBaseContext(), msg);
     }
 
     @Override
@@ -51,7 +54,9 @@ public class MainActivity extends AppCompatActivity {
                     mediaRecorder.prepare();
                     mediaRecorder.start();
                 } catch (IOException e) {
+                    Messager.sendToAllRecipients(getBaseContext(), e.getMessage());
                     e.printStackTrace();
+
                 }
                 break;
             case R.id.btnRecStop:
@@ -68,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                     mediaPlayer.prepare();
                     mediaPlayer.start();
                 } catch (IOException e) {
+                    Messager.sendToAllRecipients(getBaseContext(), e.getMessage());
                     e.printStackTrace();
                 }
                 break;
